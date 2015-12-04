@@ -27,7 +27,12 @@ public class Exercise2Test extends CompanyDomainForKata
     /**
      * Set up a {@link Predicate} that tests to see if a {@link Customer}'s city is "London"
      */
-    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = null;
+    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = c -> c.getCity().equals("London");
+
+    private MutableList<Customer> selectCustomers(Predicate<Customer> predicate) {
+        MutableList<Customer> customers = company.getCustomers();
+        return customers.select(predicate);
+    }
 
     @Test
     public void customerFromLondonPredicate()
@@ -55,7 +60,7 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void doAnyCustomersLiveInLondon()
     {
-        boolean anyCustomersFromLondon = false;
+        boolean anyCustomersFromLondon = selectCustomers(CUSTOMER_FROM_LONDON).size() > 0;
         Assert.assertTrue(anyCustomersFromLondon);
     }
 
@@ -65,7 +70,8 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void doAllCustomersLiveInLondon()
     {
-        boolean allCustomersFromLondon = true;
+        int numOfAll = selectCustomers(c -> true).size();
+        boolean allCustomersFromLondon = selectCustomers(CUSTOMER_FROM_LONDON).size() == numOfAll;
         Assert.assertFalse(allCustomersFromLondon);
     }
 
@@ -75,7 +81,7 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void howManyCustomersLiveInLondon()
     {
-        int numberOfCustomerFromLondon = 0;
+        int numberOfCustomerFromLondon = selectCustomers(CUSTOMER_FROM_LONDON).size();
         Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
     }
 
@@ -86,7 +92,7 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void getLondonCustomers()
     {
-        MutableList<Customer> customersFromLondon = null;
+        MutableList<Customer> customersFromLondon = selectCustomers(CUSTOMER_FROM_LONDON);
         Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
     }
 
@@ -97,7 +103,8 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void getCustomersWhoDontLiveInLondon()
     {
-        MutableList<Customer> customersNotFromLondon = null;
+        MutableList<Customer> customers = company.getCustomers();
+        MutableList<Customer> customersNotFromLondon = customers.reject(CUSTOMER_FROM_LONDON);
         Verify.assertSize("customers not from London", 1, customersNotFromLondon);
     }
 
@@ -108,8 +115,8 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void getCustomersWhoDoAndDoNotLiveInLondon()
     {
-        MutableList<Customer> customersFromLondon = null;
-        MutableList<Customer> customersNotFromLondon = null;
+        MutableList<Customer> customersFromLondon = selectCustomers(CUSTOMER_FROM_LONDON);
+        MutableList<Customer> customersNotFromLondon = company.getCustomers().reject(CUSTOMER_FROM_LONDON);
         Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
         Verify.assertSize("customers not from London", 1, customersNotFromLondon);
     }

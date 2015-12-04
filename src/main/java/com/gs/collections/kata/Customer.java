@@ -35,7 +35,7 @@ public class Customer
         return null;
     };
 
-    public static final Function<Customer, String> TO_CITY = null;
+    public static final Function<Customer, String> TO_CITY = Customer::getCity;
 
     public static final Function<Customer, Double> TO_TOTAL_ORDER_VALUE = Customer::getTotalOrderValue;
 
