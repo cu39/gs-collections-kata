@@ -54,13 +54,7 @@ public class Company
 
     public MutableList<Order> getOrders()
     {
-        Assert.fail("Refactor this code to use GS Collections as part of Exercise 3");
-        MutableList<Order> orders = FastList.newList();
-        for (Customer customer : this.customers)
-        {
-            orders.addAll(customer.getOrders());
-        }
-        return orders;
+        return this.customers.flatCollect(Customer::getOrders);
     }
 
     public Customer getMostRecentCustomer()
