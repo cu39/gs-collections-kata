@@ -16,12 +16,10 @@
 
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.block.function.AddFunction;
+import com.gs.collections.impl.list.mutable.FastList;
 import com.gs.collections.impl.utility.ListIterate;
 import org.junit.Assert;
 
@@ -42,7 +40,7 @@ public class Customer
     private final String name;
     private final String city;
 
-    private final List<Order> orders = new ArrayList<>();
+    private final MutableList<Order> orders = FastList.newList();
 
     public Customer(String name, String city)
     {
@@ -60,7 +58,7 @@ public class Customer
         return this.name;
     }
 
-    public List<Order> getOrders()
+    public MutableList<Order> getOrders()
     {
         return this.orders;
     }
