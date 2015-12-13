@@ -20,7 +20,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.gs.collections.api.bag.sorted.MutableSortedBag;
 import com.gs.collections.api.block.function.Function;
+import com.gs.collections.impl.bag.sorted.mutable.TreeBag;
+import com.gs.collections.impl.block.factory.Comparators;
 import com.gs.collections.impl.block.function.AddFunction;
 import com.gs.collections.impl.collection.mutable.CollectionAdapter;
 import com.gs.collections.impl.utility.Iterate;
@@ -38,7 +41,7 @@ public class Order
     private static int nextOrderNumber = 1;
 
     private final int orderNumber;
-    private final List<LineItem> lineItems = new ArrayList<>();
+    private final MutableSortedBag<LineItem> lineItems = TreeBag.newBag(Comparators.byFunction(LineItem::getName));
     private boolean isDelivered;
 
     public Order()
@@ -67,7 +70,12 @@ public class Order
         this.lineItems.add(aLineItem);
     }
 
-    public List<LineItem> getLineItems()
+    public void addLineItems(LineItem aLineItem, int count)
+    {
+        this.lineItems.addOccurrences(aLineItem, count);
+    }
+
+    public MutableSortedBag<LineItem> getLineItems()
     {
         return this.lineItems;
     }
